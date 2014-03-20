@@ -1,0 +1,4 @@
+{
+  "directory": "assets/vendor",
+  "testPath": "test/client/spec"
+}
