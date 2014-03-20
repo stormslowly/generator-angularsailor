@@ -23,20 +23,41 @@ var AngularsailorGenerator = yeoman.generators.Base.extend({
     this.log(this.yeoman);
 
     // replace it with a short and sweet description of your generator
-    this.log(chalk.magenta('You\'re using the fantastic Angularsailor generator.'));
+    this.log(chalk.magenta('You\'re using the Angularsailor generator.'));
 
-    var prompts = [{
-      type: 'confirm',
-      name: 'someOption',
-      message: 'Would you like to enable this option?',
-      default: true
-    }];
+    var prompts = [
+      {
+        name: 'appName',
+        message: 'what would you like to call your app?',
+        default: 'myApp'
+      },
+      {
+        type: 'list',
+        name: 'renderEngine',
+        choices: ['jade', 'ejs'],
+        message: 'Which render engine you like to use?',
+        default: 'ejs'
+      }
+    ];
 
     this.prompt(prompts, function (props) {
-      this.someOption = props.someOption;
+      this.appName = props.appName;
+      this.renderEngine = props.renderEngine;
 
       done();
     }.bind(this));
+  },
+
+  newSailsApp: function () {
+
+    var done = this.async();
+    var args = ['new', this.appName, '--' + this.renderEngine ];
+
+    var newSails = this.spawn('sails', args);
+    newSails.on('close', function (code) {
+      console.log('new Sails app with return code ', code);
+      done();
+    });
   },
 
   app: function () {
